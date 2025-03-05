@@ -54,7 +54,7 @@ Once you have installed all necessary packages, you can exit the Julia REPL by t
 Now that you have set up a Singularity container with Julia and installed all necessary packages, you can write your Julia code in a `.jl` file and submit it as a job to the cluster. Simply add the line `singularity exec julia_latest.sif julia 'path/to/your/script.jl'` to your SLURM script; this will run the specified script using the Julia command. Other notes:
 
 - One can modify the `julia` command using the [standard Julia command line arguments](https://docs.julialang.org/en/v1/manual/command-line-interface/).
-- Use `srun -c $SLURM_CPUS_PER_TASK` and `julia --threads 8` if running a multi-threaded job (change "8" to the two times the number of CPU cores allocated to the job).
+- Use `srun -c $SLURM_CPUS_PER_TASK` and `julia --threads 8` if running a multi-threaded job (change "8" to however many threads you intend to use, but note that asking for more will use up more fairshare score and increase the time it takes for your job to be accepted). 
 
 A full SLURM script that runs Julia with multiple threads might look like this; an actual script is included in the same directory as this document:
 
@@ -72,5 +72,4 @@ A full SLURM script that runs Julia with multiple threads might look like this; 
 srun -c $SLURM_CPUS_PER_TASK singularity exec julia_latest.sif julia --threads 8 'path/to/script.jl' 'arg1' 'arg2'
 ```
 
-With that, happy computing!
-
+Finally, once you've written a SLURM script "scriptname.sh", submit it as a job by running `sbatch scriptname.sh`. 
